@@ -1,0 +1,8 @@
+Обновление ядра Linux из исходников
+https://www.systutorials.com/compile-install-linux-kernel-source-code-existing-linux-os/
+
+Обновление gcc
+https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7/
+
+Установка пакетов kernel-devel и kernel-headers для правильной сборки ядраы
+https://www.tecmint.com/install-kernel-headers-in-centos-7/

@@ -1,0 +1,38 @@
+yum -y install gcc make ncurses-devel openssl-devel wget flex bison
+yum -y update
+cd /usr/src/
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.12.3.tar.xz
+tar xf linux-*
+cd linux-*
+make menuconfig
+reboot
+yum -y install gcc
+yum -y install gcc-c++
+cd /usr/src/
+wget http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.gz
+tar zxf gcc-7.3.0.tar.gz
+cd gcc-7.3.0
+yum -y install bzip2
+./contrib/download_prerequisites
+ ./configure --disable-multilib --enable-languages=c,c++
+make -j 8 && make install
+gcc --version
+which gcc
+mv /bin/gcc /tmp/
+cd /bin
+ln -s /usr/local/bin/gcc gcc
+cd /usr/src/linux-5.12.3/
+make menuconfig
+yum install kernel-devel
+yum -y install kernel-headers
+make -j 8 && make modules_install && make install
+yum -y install libelf-dev libelf-devel
+yum -y install elfutils-libelf-devel
+yum -y install libssl-dev build-essential kernel-package libncurses-dev
+make -j 8
+make modules_install
+make install
+grub2-mkconfig -o /boot/grub2/grub.cfg
+grub2-set-default 0
+reboot
+uname -r

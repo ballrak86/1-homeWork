@@ -1,0 +1,7 @@
+packer build centos.json
+vagrant box add --name centos-7-5 centos-7.7.1908-kernel-5-x86_64-Minimal.box
+vagrant box list
+nano Vagrantfile
+vagrant up
+vagrant ssh
+ uname -r

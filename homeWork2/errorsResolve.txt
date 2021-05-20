@@ -1,0 +1,123 @@
+Ошибки которые встретились при выполнении ДЗ
+------------------------------------------------------------
+1)Несоответсвие версий пакетов GCC
+[root@localhost linux-5.12.3]# make menuconfig
+  HOSTCC  scripts/basic/fixdep
+  UPD     scripts/kconfig/mconf-cfg
+  HOSTCC  scripts/kconfig/mconf.o
+  HOSTCC  scripts/kconfig/lxdialog/checklist.o
+  HOSTCC  scripts/kconfig/lxdialog/inputbox.o
+  HOSTCC  scripts/kconfig/lxdialog/menubox.o
+  HOSTCC  scripts/kconfig/lxdialog/textbox.o
+  HOSTCC  scripts/kconfig/lxdialog/util.o
+  HOSTCC  scripts/kconfig/lxdialog/yesno.o
+  HOSTCC  scripts/kconfig/confdata.o
+  HOSTCC  scripts/kconfig/expr.o
+  LEX     scripts/kconfig/lexer.lex.c
+  YACC    scripts/kconfig/parser.tab.[ch]
+  HOSTCC  scripts/kconfig/lexer.lex.o
+  HOSTCC  scripts/kconfig/parser.tab.o
+  HOSTCC  scripts/kconfig/preprocess.o
+  HOSTCC  scripts/kconfig/symbol.o
+  HOSTCC  scripts/kconfig/util.o
+  HOSTLD  scripts/kconfig/mconf
+***
+*** Compiler is too old.
+***   Your GCC version:    4.8.5
+***   Minimum GCC version: 4.9.0
+***
+scripts/Kconfig.include:44: Sorry, this compiler is not supported.
+make[2]: *** [menuconfig] Error 1
+make[1]: *** [menuconfig] Error 2
+make: *** [__sub-make] Error 2
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Решил установкой новой версии GCC из исходников. Подмена файла /bin/gcc и создание символьной ссылки на новую версию GCC
+yum -y install gcc
+yum -y install gcc-c++
+cd /usr/src/
+wget http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.gz
+tar zxf gcc-7.3.0.tar.gz
+cd gcc-7.3.0
+yum -y install bzip2
+./contrib/download_prerequisites
+ ./configure --disable-multilib --enable-languages=c,c++
+make -j 8 && make install
+gcc --version
+which gcc
+mv /bin/gcc /tmp/
+cd /bin
+ln -s /usr/local/bin/gcc gcc
+
+------------------------------------------------------------
+2)При сборке ядра выдавало ошибку
+[root@kernel-update linux-5.12.3]# make -j 8 && make modules_install && make install
+  SYSHDR  arch/x86/include/generated/uapi/asm/unistd_32.h
+  SYSHDR  arch/x86/include/generated/uapi/asm/unistd_64.h
+  SYSHDR  arch/x86/include/generated/uapi/asm/unistd_x32.h
+  SYSTBL  arch/x86/include/generated/asm/syscalls_32.h
+  SYSHDR  arch/x86/include/generated/asm/unistd_32_ia32.h
+  SYSHDR  arch/x86/include/generated/asm/unistd_64_x32.h
+  WRAP    arch/x86/include/generated/uapi/asm/bpf_perf_event.h
+  WRAP    arch/x86/include/generated/uapi/asm/errno.h
+  WRAP    arch/x86/include/generated/uapi/asm/fcntl.h
+  WRAP    arch/x86/include/generated/uapi/asm/ioctl.h
+  WRAP    arch/x86/include/generated/uapi/asm/ioctls.h
+  WRAP    arch/x86/include/generated/uapi/asm/ipcbuf.h
+  WRAP    arch/x86/include/generated/uapi/asm/param.h
+  WRAP    arch/x86/include/generated/uapi/asm/poll.h
+  WRAP    arch/x86/include/generated/uapi/asm/resource.h
+  SYSTBL  arch/x86/include/generated/asm/syscalls_64.h
+  WRAP    arch/x86/include/generated/uapi/asm/socket.h
+  HYPERCALLS arch/x86/include/generated/asm/xen-hypercalls.h
+  WRAP    arch/x86/include/generated/uapi/asm/sockios.h
+  WRAP    arch/x86/include/generated/uapi/asm/termbits.h
+  WRAP    arch/x86/include/generated/uapi/asm/termios.h
+  WRAP    arch/x86/include/generated/uapi/asm/types.h
+  HOSTCC  arch/x86/tools/relocs_32.o
+  HOSTCC  arch/x86/tools/relocs_64.o
+  HOSTCC  arch/x86/tools/relocs_common.o
+  UPD     include/config/kernel.release
+  UPD     include/generated/uapi/linux/version.h
+  WRAP    arch/x86/include/generated/asm/early_ioremap.h
+  WRAP    arch/x86/include/generated/asm/export.h
+  WRAP    arch/x86/include/generated/asm/mcs_spinlock.h
+  WRAP    arch/x86/include/generated/asm/irq_regs.h
+  WRAP    arch/x86/include/generated/asm/kmap_size.h
+  WRAP    arch/x86/include/generated/asm/local64.h
+  WRAP    arch/x86/include/generated/asm/mmiowb.h
+  WRAP    arch/x86/include/generated/asm/module.lds.h
+  WRAP    arch/x86/include/generated/asm/rwonce.h
+  UPD     include/generated/utsrelease.h
+  HOSTLD  arch/x86/tools/relocs
+error: Cannot generate ORC metadata for CONFIG_UNWINDER_ORC=y, please install libelf-dev, libelf-devel or elfutils-libelf-devel
+  HOSTCC  scripts/bin2c
+  HOSTCC  scripts/kallsyms
+  HOSTCC  scripts/genksyms/genksyms.o
+make[1]: *** [prepare-objtool] Error 1
+make[1]: *** Waiting for unfinished jobs....
+  YACC    scripts/genksyms/parse.tab.[ch]
+  HOSTCC  scripts/sorttable
+  HOSTCC  scripts/selinux/genheaders/genheaders
+  HOSTCC  scripts/asn1_compiler
+  LEX     scripts/genksyms/lex.lex.c
+  HOSTCC  scripts/genksyms/parse.tab.o
+  HOSTCC  scripts/genksyms/lex.lex.o
+  HOSTCC  scripts/sign-file
+  HOSTCC  scripts/selinux/mdp/mdp
+  HOSTCC  scripts/extract-cert
+  HOSTLD  scripts/genksyms/genksyms
+make: *** [__sub-make] Error 2
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+установил то что он просил
+yum -y install elfutils-libelf-devel
+
+------------------------------------------------------------
+3)Та же была проблема с утановкой одного из драйверов
+make: *** [__sub-make] Error 2
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Установил
+yum -y install kernel-devel
+yum -y install kernel-headers

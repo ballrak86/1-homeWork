@@ -1,0 +1,10 @@
+vagrant up
+vagrant status
+sharedFolder_in_master.sh
+  uuidVM=`vboxmanage list vms | grep "shared-folder" | sed 's|.*{\(.*\)}|\1|'`
+  VBoxManage sharedfolder add $uuidVM --name "hell" --hostpath "/mnt/test" --automount --auto-mount-point "/media/test"
+vagrant up
+vagrant ssh
+  sudo -i
+  echo "123" > /media/test/1.txt
+cat /mnt/test/1.txt

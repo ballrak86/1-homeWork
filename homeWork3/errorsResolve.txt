@@ -1,0 +1,35 @@
+Ошибки которые встретились при выполнении ДЗ
+------------------------------------------------------------
+1)Не находил хедеры для ядра при установке VBoxLinuxAdditions
+[root@shared-folder tmp]# /mnt/VBoxLinuxAdditions.run --nox11
+Verifying archive integrity... All good.
+Uncompressing VirtualBox 6.0.24 Guest Additions for Linux........
+VirtualBox Guest Additions installer
+Removing installed version 6.0.24 of VirtualBox Guest Additions...
+Copying additional installer modules ...
+Installing additional modules ...
+VirtualBox Guest Additions: Starting.
+VirtualBox Guest Additions: Building the VirtualBox Guest Additions kernel
+modules.  This may take a while.
+VirtualBox Guest Additions: To build modules for other installed kernels, run
+VirtualBox Guest Additions:   /sbin/rcvboxadd quicksetup <version>
+VirtualBox Guest Additions: or
+VirtualBox Guest Additions:   /sbin/rcvboxadd quicksetup all
+VirtualBox Guest Additions: Kernel headers not found for target kernel
+3.10.0-1127.el7.x86_64. Please install them and execute
+  /sbin/rcvboxadd setup
+modprobe vboxguest failed
+The log file /var/log/vboxadd-setup.log may contain further information.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+yum -y install kernel-devel
+yum -y install kernel-headers
+Но это не помогло, так как хедеры устновились к новой версии ядра 3.10.0-1160.25.1.el7.x86_64
+Тогда добавил к этим коммандам еще 
+yum -y update
+
+------------------------------------------------------------
+2)при перезагрузки VM, должен был отработать /etc/rc.d/rc.local, не запускался скрипт который устанавливал VBoxLinuxAdditions.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Нужно было добавить права на исполнение этого файла
+chmod +x /etc/rc.d/rc.local

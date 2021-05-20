@@ -1,0 +1,8 @@
+автозагрузка при перезагрузки системы /etc/rc.d/rc.local
+https://artkiev.com/blog/centos-autorun-not-work.htm
+
+Установка пакетов kernel-devel и kernel-headers для правильной сборки ядраы
+https://www.tecmint.com/install-kernel-headers-in-centos-7/
+
+Правильная настройка провижинга в Vagrant
+https://www.vagrantup.com/docs/provisioning
